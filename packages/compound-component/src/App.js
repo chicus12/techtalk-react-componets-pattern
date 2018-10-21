@@ -5,6 +5,7 @@ import * as styles from './styles'
 class Tabs extends Component {
   static defaultProps = {
     tabsPlacement: 'top',
+    disabled: [],
   }
 
   state = { activeIndex: 0 }
@@ -16,19 +17,19 @@ class Tabs extends Component {
   renderTabs() {
     return this.props.data.map((tab, index) => {
       const isActive = this.state.activeIndex === index
-      const style = isActive
-        ? { ...styles.tab, ...styles.activeTab }
-        : styles.tab
+      const isDisabled = this.props.disabled.indexOf(index) !== -1
+      const props = {
+        style: styles.tab,
+        key: tab.label,
+        onClick: isDisabled ? null : () => this.selectTabIndex(index),
+      }
+      if (isDisabled) {
+        props.style = { ...props.style, ...styles.disabledTab }
+      } else if (isActive) {
+        props.style = { ...props.style, ...styles.activeTab }
+      }
 
-      return (
-        <div
-          key={tab.label}
-          style={style}
-          onClick={() => this.selectTabIndex(index)}
-        >
-          {tab.label}
-        </div>
-      )
+      return <div {...props}>{tab.label}</div>
     })
   }
 
@@ -75,7 +76,7 @@ const App = () => {
 
   return (
     <div>
-      <Tabs data={tabData} tabsPlacement="bottom" />
+      <Tabs data={tabData} tabsPlacement="top" disabled={[1]} />
     </div>
   )
 }
