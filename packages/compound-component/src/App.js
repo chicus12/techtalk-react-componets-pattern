@@ -1,58 +1,50 @@
 import React, { Component } from 'react'
+import classNames from 'classnames'
 
-import * as styles from './styles'
+import './App.css'
 
 class Tabs extends Component {
-  static defaultProps = {
-    tabsPlacement: 'top',
-    disabled: [],
+  static Header = ({ children, activeIndex, onSelect }) => (
+    <div>
+      {React.Children.map(children, (child, index) =>
+        React.cloneElement(child, {
+          isActive: index === activeIndex,
+          onSelect: () => onSelect(index),
+        })
+      )}
+    </div>
+  )
+
+  static Tab = ({ children, onSelect, isActive, disabled }) => {
+    const style = classNames('tab', { active: isActive, disabled })
+    return (
+      <div className={style} onClick={disabled ? null : onSelect}>
+        {children}
+      </div>
+    )
+  }
+
+  static Panels = ({ children, activeIndex }) => (
+    <div className="panels">
+      {React.Children.toArray(children)[activeIndex]}
+    </div>
+  )
+
+  static Panel = ({ children }) => {
+    console.log('here')
+    return <div>{children}</div>
   }
 
   state = { activeIndex: 0 }
 
-  selectTabIndex(activeIndex) {
+  selectTabIndex = activeIndex => {
     this.setState({ activeIndex })
   }
 
-  renderTabs() {
-    return this.props.data.map((tab, index) => {
-      const isActive = this.state.activeIndex === index
-      const isDisabled = this.props.disabled.indexOf(index) !== -1
-      const props = {
-        style: styles.tab,
-        key: tab.label,
-        onClick: isDisabled ? null : () => this.selectTabIndex(index),
-      }
-      if (isDisabled) {
-        props.style = { ...props.style, ...styles.disabledTab }
-      } else if (isActive) {
-        props.style = { ...props.style, ...styles.activeTab }
-      }
-
-      return <div {...props}>{tab.label}</div>
-    })
-  }
-
-  renderPanel() {
-    const tab = this.props.data[this.state.activeIndex]
-    return <div>{tab.content}</div>
-  }
-
   render() {
-    const tabs = (
-      <div key="tabs" style={styles.tabList}>
-        {this.renderTabs()}
-      </div>
-    )
-
-    const panels = (
-      <div key="panel" style={styles.tabPanels}>
-        {this.renderPanel()}
-      </div>
-    )
     return (
       <div>
-        {this.props.tabsPlacement === 'top' ? [tabs, panels] : [panels, tabs]}
+        {this.props.children({ ...this.state, onSelect: this.selectTabIndex })}
       </div>
     )
   }
@@ -76,7 +68,28 @@ const App = () => {
 
   return (
     <div>
-      <Tabs data={tabData} tabsPlacement="top" disabled={[1]} />
+      <Tabs>
+        {({ activeIndex, onSelect }) => (
+          <>
+            <Tabs.Header activeIndex={activeIndex} onSelect={onSelect}>
+              <Tabs.Tab>Tacos</Tabs.Tab>
+              <Tabs.Tab disabled>Burritos</Tabs.Tab>
+              <Tabs.Tab>Coconut Korma</Tabs.Tab>
+            </Tabs.Header>
+            <Tabs.Panels activeIndex={activeIndex}>
+              <Tabs.Panel>
+                <p>Tacos son deliciosos</p>
+              </Tabs.Panel>
+              <Tabs.Panel>
+                <p>Algunas veces un burrito es lo que realmente necesitas</p>
+              </Tabs.Panel>
+              <Tabs.Panel>
+                <p>Puede ser la mejor opción</p>
+              </Tabs.Panel>
+            </Tabs.Panels>
+          </>
+        )}
+      </Tabs>
     </div>
   )
 }
