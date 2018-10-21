@@ -3,6 +3,10 @@ import React, { Component } from 'react'
 import * as styles from './styles'
 
 class Tabs extends Component {
+  static defaultProps = {
+    tabsPlacement: 'top',
+  }
+
   state = { activeIndex: 0 }
 
   selectTabIndex(activeIndex) {
@@ -34,10 +38,20 @@ class Tabs extends Component {
   }
 
   render() {
+    const tabs = (
+      <div key="tabs" style={styles.tabList}>
+        {this.renderTabs()}
+      </div>
+    )
+
+    const panels = (
+      <div key="panel" style={styles.tabPanels}>
+        {this.renderPanel()}
+      </div>
+    )
     return (
       <div>
-        <div style={styles.tabList}>{this.renderTabs()}</div>
-        <div style={styles.tabPanels}>{this.renderPanel()}</div>
+        {this.props.tabsPlacement === 'top' ? [tabs, panels] : [panels, tabs]}
       </div>
     )
   }
@@ -61,7 +75,7 @@ const App = () => {
 
   return (
     <div>
-      <Tabs data={tabData} />
+      <Tabs data={tabData} tabsPlacement="bottom" />
     </div>
   )
 }
