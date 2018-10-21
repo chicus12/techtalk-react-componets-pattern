@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
+import classNames from 'classnames'
 
-import * as styles from './styles'
+import './App.css'
 
 class Tabs extends Component {
   state = { activeIndex: 0 }
@@ -12,14 +13,12 @@ class Tabs extends Component {
   renderTabs() {
     return this.props.data.map((tab, index) => {
       const isActive = this.state.activeIndex === index
-      const style = isActive
-        ? { ...styles.tab, ...styles.activeTab }
-        : styles.tab
+      const style = classNames('tab', { active: isActive })
 
       return (
         <div
           key={tab.label}
-          style={style}
+          className={style}
           onClick={() => this.selectTabIndex(index)}
         >
           {tab.label}
@@ -36,8 +35,8 @@ class Tabs extends Component {
   render() {
     return (
       <div>
-        <div style={styles.tabList}>{this.renderTabs()}</div>
-        <div style={styles.tabPanels}>{this.renderPanel()}</div>
+        <div>{this.renderTabs()}</div>
+        <div className="panels">{this.renderPanel()}</div>
       </div>
     )
   }
