@@ -1,0 +1,21 @@
+.tab {
+  display: inline-block;
+  padding: 10px;
+  margin: 10px;
+  border-bottom: 4px solid #ccc;
+  border-bottom-color: #ccc;
+  cursor: pointer;
+}
+
+.active {
+  border-bottom-color: #000;
+}
+
+.disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.panels {
+  padding: 10px;
+}
