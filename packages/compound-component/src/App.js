@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
+import classNames from 'classnames'
 
-import * as styles from './styles'
+import './App.css'
 
 class Tabs extends Component {
   static defaultProps = {
@@ -18,18 +19,20 @@ class Tabs extends Component {
     return this.props.data.map((tab, index) => {
       const isActive = this.state.activeIndex === index
       const isDisabled = this.props.disabled.indexOf(index) !== -1
-      const props = {
-        style: styles.tab,
-        key: tab.label,
-        onClick: isDisabled ? null : () => this.selectTabIndex(index),
-      }
-      if (isDisabled) {
-        props.style = { ...props.style, ...styles.disabledTab }
-      } else if (isActive) {
-        props.style = { ...props.style, ...styles.activeTab }
-      }
+      const style = classNames('tab', {
+        active: isActive,
+        disabled: isDisabled,
+      })
 
-      return <div {...props}>{tab.label}</div>
+      return (
+        <div
+          key={tab.label}
+          onClick={isDisabled ? null : () => this.selectTabIndex(index)}
+          className={style}
+        >
+          {tab.label}
+        </div>
+      )
     })
   }
 
@@ -39,14 +42,10 @@ class Tabs extends Component {
   }
 
   render() {
-    const tabs = (
-      <div key="tabs" style={styles.tabList}>
-        {this.renderTabs()}
-      </div>
-    )
+    const tabs = <div key="tabs">{this.renderTabs()}</div>
 
     const panels = (
-      <div key="panel" style={styles.tabPanels}>
+      <div key="panel" className="panels">
         {this.renderPanel()}
       </div>
     )
