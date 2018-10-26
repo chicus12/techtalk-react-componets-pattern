@@ -17,6 +17,9 @@ module.exports = {
     'react/jsx-one-expression-per-line': 0,
     'react/no-array-index-key': 0,
     'react/no-unused-state': 0,
-    'import/no-extraneous-dependencies': 0
+    'import/no-extraneous-dependencies': 0,
+    'jsx-a11y/interactive-supports-focus': 0,
+    'jsx-a11y/no-static-element-interactions': 0,
+    'jsx-a11y/click-events-have-key-events': 0
   }
 };

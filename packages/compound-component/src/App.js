@@ -13,12 +13,12 @@ class Tabs extends Component {
   renderTabs() {
     return this.props.data.map((tab, index) => {
       const isActive = this.state.activeIndex === index
-      const style = classNames('tab', { active: isActive })
+      const classes = classNames('tab', { active: isActive })
 
       return (
         <div
           key={tab.label}
-          className={style}
+          className={classes}
           onClick={() => this.selectTabIndex(index)}
         >
           {tab.label}
