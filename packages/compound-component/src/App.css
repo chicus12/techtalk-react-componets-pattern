@@ -13,7 +13,7 @@
 
 .disabled {
   opacity: 0.25;
-  cursor: default;
+  cursor: not-allowed;
 }
 
 .panels {
