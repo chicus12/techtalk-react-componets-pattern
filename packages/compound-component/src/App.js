@@ -2,6 +2,11 @@ import React, { Component } from 'react'
 import classNames from 'classnames'
 
 import './App.css'
+import burrito from './burrito.png'
+import taco from './taco.png'
+import coconut from './coconut.png'
+
+const Icon = ({ src }) => <img src={src} alt="icon" className="icon" />
 
 class Tabs extends Component {
   state = { activeIndex: 0 }
